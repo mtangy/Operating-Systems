@@ -1,0 +1,5 @@
+
+
+For the lottery scheduler, the finish order was: C D E B A with times 4400, 4700, 5200, 7100, and 7200 ms.
+This is expected because A and B got fewer lottery tickets than C, D, and E. 
+In round robin, the finish order was: A B C D E.

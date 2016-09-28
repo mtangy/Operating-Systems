@@ -1,0 +1,35 @@
+Michael Tangy
+Jason Darnell
+CS 314 - Fall 2015
+tar cvzf project3_mtangy_jdarnell_done ~/cs314/project3
+Project3 lottery scheduler - Design Description 
+
+
+Round Robin Scheduler Description:
+
+The current systems round robin scheduler works by first checking if the queue of runable processes is emtpy 
+if it is it outputs an error message and exits the operating system. Next it assigns its local PCB pointer to
+the PCB in the front of the runable process's queue. The scheduler then checks if that PCB correspondes to the 
+process currently running if so it moves that process to the end of the runnable process's que. After that the 
+scheduler assigns its PCB pointer to the PCB in the front of the runable process's queue(next process on the que)
+and asssigns that to the currentPCB. After that the scheduler travers through the zombie process que and removes
+all the process on the que while also freeing all the resources associated with those processes. The scheduler then 
+sets the system timer to the process quantom time so it can later premptly schedule the next process in the que.
+
+Originally we thought the system would assign the tickets to each process by assigning a number range for each process. 
+We thought the scheduler would pull a unique winning ticket number and then find the process that unique ticket number 
+in that range and schedule that as the current process.
+
+To implement the lottery scheduler, each process is given a number of tickets. Whenever the scheduler is called, a random number is chosen between 0 and the total number of tickets issued. A loop iterates through the processes, summing the tickets of the processes it visits, until the sum is greater than the random number previously generated. The result is that a random process gets chosen such that the more tickets a process has, the greater the probability it will win. The chosen process gets sent to the front of the run queue. What was different in our implentation was that we had difficulty looping through the processes so we decided to repeatedly remove the first process and insert it back into the queue at the end. This allows each process on the queue to be visited. We assigned each process's number of tickets by assigning it to the p_nice which correspondes to the time/order was created so processes created last would be schedule first this was consistent with our results since process D would almost always finish first(when creating 4 processes). All of our code to implement the lottery scheduler works great.
+
+All of Our code to create interative process's with our normal processes along with the response time is in place and mostly working. However we encountered a bug that would constantly call a trap with empty perameters and get stuck in an infinite loop so the code call our interactive process file is commented out but you can uncomment it and run it to briefly see our results. Our design consists of creating half as many interactive processes then regular process's in the orignally userprog. the interactive procceses's will have a loop that perform the same computations as the original processes but than call the process sleep trap. The process sleep trap calls process suspend which contains an extra process timer thats set to double the process quantum. We alter the trap timer to check it theres any process on the wait que to wake up before calling process schedule.   
+
+
+
+    
+timing data:
+Round Robin -
+5 processes: 98800,99900,99800,99700,99600
+10 processes: 196600,198900,199200,199700,199600,199500,199400,199300,199200,199100
+
+

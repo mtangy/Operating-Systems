@@ -1,0 +1,5 @@
+Michael Tangy
+CS-314 
+Project 1 – Design details 
+
+	Once the Getpid function is called in userprog, execution is switched to the corresponding trap interface in usertraps.s. From there the trap instruction is called passing into the corresponding trap interrupt number after that the execution is switched to the interrupt handler to perform the context switch to save the current state of the CPU. After the context switch the system is in kernel mode and execution jumps to its corresponding trap subroutine in traps.c. For this trap the ProcessSetResult function is called and passed into is the current process control block and a Getpid function call which is the function I wrote in process.c that computes and returns the current PID. The ProcessSetResult function saves the value passed to it into a register (PROCESS_STACK_IREG+1) (in this case the value is the PID returned form the function call) after that the CPU’s context is restored with the given value still in a designated register. The value is then returned by the trap call in the userprog and the original process continues to run printing that returned PID value to the console.       
